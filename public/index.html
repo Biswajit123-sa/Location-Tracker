@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Live tracker</title>
+
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+  <style>
+    body {
+      background: linear-gradient(135deg, #0f172a, #1e293b);
+    }
+
+    
+    #map {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+
+    .gm-style-mtc {
+      z-index: 9999 !important;
+    }
+  </style>
+</head>
+
+<body class="text-white min-h-screen overflow-hidden">
+
+ 
+  <header
+    class="flex justify-between items-center px-4 md:px-6 py-3 bg-white/10 backdrop-blur-md shadow-lg relative z-40">
+
+    <div class="flex items-center gap-2">
+      <i class="fa-solid fa-location-dot text-indigo-400 text-xl"></i>
+      <h1 class="font-bold text-lg">Friend Tracker</h1>
+    </div>
+
+    <button id="menuBtn" class="lg:hidden text-xl">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+
+  </header>
+
+ 
+  <div class="flex h-[calc(100vh-60px)] relative">
+
+   
+    <aside id="sidebar"
+      class="fixed lg:static z-50 top-0 left-0 h-full w-72 bg-white/10 backdrop-blur-lg p-5 border-r border-white/20 transform -translate-x-full lg:translate-x-0 transition duration-300">
+
+      <h2 class="font-semibold mb-3 flex items-center gap-2">
+        <i class="fa-solid fa-user"></i> Your Profile
+      </h2>
+
+      <input id="name"
+        class="w-full p-2 rounded bg-white/20 border border-white/30 mb-3 placeholder-gray-300"
+        placeholder="Enter your name" />
+
+      <button onclick="startSharing()"
+        class="w-full bg-indigo-500 hover:bg-indigo-600 p-2 rounded font-semibold mb-5">
+        <i class="fa-solid fa-location-arrow"></i> Start Sharing
+      </button>
+
+      <hr class="border-white/20 mb-4">
+
+      <h2 class="font-semibold mb-3 flex items-center gap-2">
+        <i class="fa-solid fa-users"></i> Online Friends
+      </h2>
+
+      <div id="usersList" class="space-y-3 text-sm"></div>
+
+    </aside>
+
+
+    <div id="overlay" class="fixed inset-0 bg-black/40 hidden lg:hidden z-40"></div>
+
+    
+    <main class="flex-1 relative">
+      <div id="map"></div>
+
+     
+      <div
+        class="absolute bottom-4 left-4 bg-white/10 backdrop-blur-lg p-3 rounded-xl border border-white/20 shadow-lg text-xs md:text-sm z-30">
+
+        <i class="fa-solid fa-circle text-green-400"></i>
+        Live tracking active
+
+      </div>
+    </main>
+
+  </div>
+
+  
+  <script src="/socket.io/socket.io.js"></script>
+
+  <!-- Script -->
+  <script src="script.js"></script>
+
+  <!-- Google Maps -->
+  <script async
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCP3Gq9ShXQ6LaM6aVkyGSGIXHz9_HoVrU&callback=initMap">
+  </script>
+
+  <!-- Sidebar Toggle -->
+  <script>
+    const menuBtn = document.getElementById("menuBtn");
+    const sidebar = document.getElementById("sidebar");
+    const overlay = document.getElementById("overlay");
+
+    menuBtn.onclick = () => {
+      sidebar.classList.remove("-translate-x-full");
+      overlay.classList.remove("hidden");
+    };
+
+    overlay.onclick = () => {
+      sidebar.classList.add("-translate-x-full");
+      overlay.classList.add("hidden");
+    };
+  </script>
+
+</body>
+
+</html>
