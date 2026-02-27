@@ -4,30 +4,40 @@ let map;
 let markers = {};
 let myName = "";
 
+// Load Google Maps script dynamically
+async function loadGoogleMaps() {
+  try {
+    // Get API key from server
+    const response = await fetch("/api/config");
+    const data = await response.json();
+    const apiKey = data.apiKey;
+
+    // Create script tag for Google Maps
+    const script = document.createElement("script");
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=initMap`;
+    script.async = true;
+    script.defer = true;
+    document.head.appendChild(script);
+  } catch (error) {
+    console.error("Failed to load Google Maps:", error);
+    alert("Error: Could not load map. Check your API key.");
+  }
+}
+
+// Initialize map
 window.initMap = function () {
-
   map = new google.maps.Map(document.getElementById("map"), {
-
     center: { lat: 20.2961, lng: 85.8245 },
     zoom: 14,
-
     mapTypeControl: true,
-
-    mapTypeControlOptions: {
-      style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
-      position: google.maps.ControlPosition.TOP_RIGHT,
-      mapTypeIds: ["roadmap", "satellite", "terrain", "hybrid"]
-    },
-
     zoomControl: true,
     fullscreenControl: true,
-    streetViewControl: true,
-
-    mapTypeId: "roadmap"
-
+    streetViewControl: true
   });
-
 };
+
+// Load maps when page loads
+loadGoogleMaps();
 
 function startSharing() {
 
