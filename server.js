@@ -15,15 +15,12 @@ app.get("/api/config", (req, res) => {
   res.json({ apiKey: process.env.MAP_API_KEY });
 });
 
-// Store users
 let users = {};
 
-// Socket connection
 io.on("connection", (socket) => {
 
     console.log("User connected:", socket.id);
 
-    // When user joins
     socket.on("join", (data) => {
         users[socket.id] = {
             name: data.name,
@@ -34,7 +31,6 @@ io.on("connection", (socket) => {
         io.emit("users-update", users);
     });
 
-    // When location sent
     socket.on("send-location", (coords) => {
         if (users[socket.id]) {
             users[socket.id].lat = coords.lat;
@@ -44,7 +40,6 @@ io.on("connection", (socket) => {
         io.emit("users-update", users);
     });
 
-    // Disconnect
     socket.on("disconnect", () => {
         console.log("User disconnected:", socket.id);
 
@@ -54,7 +49,6 @@ io.on("connection", (socket) => {
 
 });
 
-// Start server
 const PORT = process.env.PORT || 3000;
 
 server.listen(PORT, () => {
